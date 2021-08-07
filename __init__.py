@@ -31,12 +31,22 @@ from inspect import getargspec, getmembers, isfunction
 from . starter_engine_operator import StarterEngineOperator
 from . import component_generator_util
 
+def enum_wrapper(**kwargs):
+    items_as_tuples = []
+    for item in kwargs["items"]:
+        items_as_tuples.append(tuple(item))
+    kwargs["items"] = items_as_tuples
+    return EnumProperty(**kwargs)
+
+
 def parse_and_process_generators(module = component_generator_util, target_class = StarterEngineOperator):
     available_component_generators = getmembers(module, isfunction)
     parsed_component_generators = []
     property_translator = {
         "float": FloatProperty,
-        "int": IntProperty
+        "int": IntProperty,
+        "enum": enum_wrapper,
+        "bool": BoolProperty
     }
     for component_generator in available_component_generators:
         for argument in json.loads(component_generator[1].__doc__):

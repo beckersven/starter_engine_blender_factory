@@ -7,21 +7,6 @@ from . import component_generator_util
 from inspect import getargspec, getmembers, isfunction
 import json
 
-def parse_options(module = component_generator_util):
-        available_component_generators = getmembers(module, isfunction)
-        parsed_component_generators = {}
-        property_translator = {
-            "float": FloatProperty,
-            "int": IntProperty
-        }
-        for component_generator in available_component_generators:
-            new_component = {"function": component_generator[1], "properties":{}}
-            for argument in json.loads(component_generator[1].__doc__):
-                new_component["properties"].update({argument["properties"]["attr"]: property_translator[argument["type"]](name="A")})
-            parsed_component_generators[component_generator[0]] = new_component
-        return parsed_component_generators
-
-
 class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
     
     bl_idname = "mesh.add_starter_engine"
@@ -34,11 +19,16 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
         return context.scene is not None
     
 
-    def get_propertydict_from_prototype(self, function):
+    def get_propertydict_from_prototype(self, function, reduced):
         output_dict = {}
+        if reduced and getargspec(function).defaults is not None:
+            deductable = len(getargspec(function).defaults)
+        else:
+            deductable = 0
+        
         try:
-            for argument in getargspec(function).args:
-                output_dict.update({argument: getattr(self, argument)})
+            for i in range(len(getargspec(function).args) - deductable):
+                output_dict.update({getargspec(function).args[i]: getattr(self, getargspec(function).args[i])})
         except Exception as e:
             # May add some functionality later on
             raise(e)
@@ -49,30 +39,21 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        col.label(text="General")
         for component in self.component_generators:
-            for prop in self.get_propertydict_from_prototype(component).keys():
-                print(prop)
+            col.label(text=component.__name__.replace("_", " "))
+            for prop in self.get_propertydict_from_prototype(component, True).keys():
                 col.prop(self, prop)
+            col.separator()
         #return {"FINISHED"}
 
     def execute(self, context):
 
         objects = []
         for component in self.component_generators:
-            for sub_object in component(** self.get_propertydict_from_prototype(component)):
+            for sub_object in component(** self.get_propertydict_from_prototype(component, False)):
                 objects.append(sub_object)
         bpy.ops.object.select_all(action='DESELECT')
         for obj in objects:
             obj.select_set(True)
         bpy.ops.object.join()
         return {"FINISHED"}
-    
-
-
-   
-
-    
-
-
-
