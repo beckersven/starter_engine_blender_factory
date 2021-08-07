@@ -32,6 +32,7 @@ from . starter_engine_operator import StarterEngineOperator
 from . import component_generator_util
 
 def enum_wrapper(**kwargs):
+    """JSON in docstring can not contain tuples, so lists must be converted to work with blender-python's EnumProperty"""
     items_as_tuples = []
     for item in kwargs["items"]:
         items_as_tuples.append(tuple(item))
