@@ -184,16 +184,28 @@ def flange(flange_amount_prongs, flange_height, flange_length_prongs, flange_ang
         modifier.thickness = flange_height
         modifier.offset = -1.0
         bpy.ops.object.modifier_apply(modifier="Thickness")
-        bpy.context.object.rotation_euler[2] = angle
-        bpy.context.object.location[2] = connector_height + main_housing_height
-        yield bpy.context.object
-        
-    
-    
-    
+        triangle = bpy.context.object
+        bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=0.1 * (flange_length_prongs + main_housing_radius), depth=flange_height*1.1, location=(0, (flange_length_prongs + main_housing_radius)*0.8,flange_height/2))
+        drill_hole_outer = bpy.context.object
+        bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=0.06 * (flange_length_prongs + main_housing_radius), depth=flange_height*1.2, location=(0, (flange_length_prongs + main_housing_radius)*0.8,flange_height/2))
+        drill_hole_inner = bpy.context.object
 
+        bool_op = triangle.modifiers.new(name="Boolean", type="BOOLEAN")
+        bool_op.object = drill_hole_outer
+        bool_op.operation = "UNION"
+        bpy.ops.object.modifier_apply({"object": triangle},modifier="Boolean")
 
+        bool_op = triangle.modifiers.new(name="Boolean", type="BOOLEAN")
+        bool_op.object = drill_hole_inner
+        bool_op.operation = "DIFFERENCE"
+        bpy.ops.object.modifier_apply({"object": triangle},modifier="Boolean")
 
-    
+        bpy.ops.object.select_all(action='DESELECT')
+        drill_hole_inner.select_set(True)
+        drill_hole_outer.select_set(True)
+        bpy.ops.object.delete(confirm=False)
 
-    
+        triangle.rotation_euler[2] = angle
+        triangle.location[2] = connector_height + main_housing_height
+        yield triangle
+           
