@@ -10,13 +10,16 @@ from random import random
 
 def main_housing(main_housing_radius, main_housing_height):
     """
-    [     
+    [   
         {"type": "float", "properties": {"attr":"main_housing_height", "name": "Height (main housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 3.0, "min": 0.1, "max": 10}},
         {"type": "float", "properties": {"attr":"main_housing_radius", "name": "Radius (main housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 1.0, "min": 0.1, "max": 10}}
     ]
     """
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=main_housing_radius, depth=main_housing_height, location=(0,0,0))
     bpy.context.object.location.z = main_housing_height / 2.0
+    mat = bpy.data.materials.new(name="Material") 
+    bpy.context.object.data.materials.append(mat) 
+    bpy.context.object.active_material.diffuse_color = (0.05, 0.05, 0.05, 1) 
     yield bpy.context.object
 
 
@@ -38,6 +41,9 @@ def subside(shaft_radius, shaft_length, bit_type, screw_amount, screw_radius, sc
         yield util._create_screw_head(bit_type, screw_radius * 0.6, screw_radius, screw_radius * 0.5, 
             mathutils.Matrix.Rotation(angle, 4, "Z") @ mathutils.Matrix.Translation(mathutils.Vector((screw_placement_radial, 0, 0))) @ mathutils.Matrix.Rotation(random(), 4, "Z") @ mathutils.Matrix.Rotation(np.deg2rad(180), 4, "X"))
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=shaft_radius, depth=shaft_length, location=(0,0,-shaft_length / 2))
+    mat = bpy.data.materials.new(name="Material") 
+    bpy.context.object.data.materials.append(mat) 
+    bpy.context.object.active_material.diffuse_color = (0.05, 0.05, 0.05, 1) 
     yield bpy.context.object
 
 def cap(cap_height, cap_narrowing, cap_shape, main_housing_height=0, main_housing_radius=0, connector_height=0, flange_height=0):
@@ -45,7 +51,7 @@ def cap(cap_height, cap_narrowing, cap_shape, main_housing_height=0, main_housin
     [     
         {"type": "float", "properties": {"attr":"cap_height", "name": "Height (cap)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.0, "max": 5}},
         {"type": "float", "properties": {"attr":"cap_narrowing", "name": "Narrowing (cap)", "subtype": "DISTANCE", "unit": "LENGTH",  "default": 0.2, "min": 0.0, "max": 5}},
-        {"type": "float", "properties": {"attr":"cap_shape", "name": "Shape modifier (cap)", "default": 2.0, "min": 1.0, "max": 10.0}}
+        {"type": "float", "properties": {"attr":"cap_shape", "name": "Shape modifier (cap)", "default": 6.0, "min": 1.0, "max": 10.0}}
     ]
     """
     b = cap_height / ((main_housing_radius)**(2 * cap_shape)-(main_housing_radius-cap_narrowing)**(2 * cap_shape))
@@ -59,6 +65,9 @@ def cap(cap_height, cap_narrowing, cap_shape, main_housing_height=0, main_housin
     bpy.ops.object.mode_set(mode="OBJECT")
     bpy.context.object.data.transform(mathutils.Matrix.Translation(mathutils.Vector((0, 0, main_housing_height + connector_height + flange_height))))
     bpy.context.object.data.update()
+    mat = bpy.data.materials.new(name="Material") 
+    bpy.context.object.data.materials.append(mat) 
+    bpy.context.object.active_material.diffuse_color = (0.95, 0.95, 0.95, 1) 
     yield bpy.context.object
 
 def gearbox(gear_height, gear_radius, gear_cone_angle, gear_number_of_teeth, gear_housing, gear_housing_shape, gear_housing_opening_angle, gear_housing_opening_offset,gear_housing_thickness,
