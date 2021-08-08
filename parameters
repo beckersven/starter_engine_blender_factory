@@ -1,0 +1,337 @@
+{
+ "bit_type": {
+  "properties": {
+   "default": "Phillips",
+   "items": [
+    [
+     "Allen",
+     "ALLEN",
+     "Hexagon-shaped"
+    ],
+    [
+     "Torx",
+     "TORX",
+     "Star-shaped"
+    ],
+    [
+     "Phillips",
+     "PHILLIPS",
+     "Cross-shaped"
+    ],
+    [
+     "None",
+     "NONE",
+     "No shape"
+    ]
+   ],
+   "name": "Bit type (screws)"
+  },
+  "type": "enum"
+ },
+ "cap_height": {
+  "properties": {
+   "default": 0.2,
+   "max": 5,
+   "min": 0.0,
+   "name": "Height (cap)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "cap_narrowing": {
+  "properties": {
+   "default": 0.2,
+   "max": 5,
+   "min": 0.0,
+   "name": "Narrowing (cap)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "cap_shape": {
+  "properties": {
+   "default": 6.0,
+   "max": 10.0,
+   "min": 1.0,
+   "name": "Shape modifier (cap)"
+  },
+  "type": "float"
+ },
+ "connector_height": {
+  "properties": {
+   "default": 0.5,
+   "max": 10,
+   "min": 0.0,
+   "name": "Height",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "connector_length": {
+  "properties": {
+   "default": 0.5,
+   "max": 10,
+   "min": 0.0,
+   "name": "Length (crosspiece)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "connector_width": {
+  "properties": {
+   "default": 0.8,
+   "max": 10,
+   "min": 0.0,
+   "name": "Width (crosspiece)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "flange_amount_prongs": {
+  "properties": {
+   "default": 2,
+   "max": 6,
+   "min": 1,
+   "name": "Amount of prongs (flange)"
+  },
+  "type": "int"
+ },
+ "flange_angle_offset": {
+  "properties": {
+   "default": 0.0,
+   "max": 6.2831,
+   "min": 0.0,
+   "name": "Angle offset (flange)",
+   "subtype": "ANGLE",
+   "unit": "ROTATION"
+  },
+  "type": "float"
+ },
+ "flange_height": {
+  "properties": {
+   "default": 0.2,
+   "max": 3,
+   "min": 0.0,
+   "name": "Height (flange)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "flange_length_prongs": {
+  "properties": {
+   "default": 0.2,
+   "max": 3,
+   "min": 0.0,
+   "name": "Length (flange prongs)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "gear_cone_angle": {
+  "properties": {
+   "default": 0.0,
+   "max": 1.57,
+   "min": 0.0,
+   "name": "Cone angle (gear)",
+   "subtype": "ANGLE",
+   "unit": "ROTATION"
+  },
+  "type": "float"
+ },
+ "gear_height": {
+  "properties": {
+   "default": 0.5,
+   "max": 10,
+   "min": 0.0,
+   "name": "Height (gear)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "gear_housing": {
+  "properties": {
+   "default": true,
+   "name": "Gear Housing"
+  },
+  "type": "bool"
+ },
+ "gear_housing_opening_angle": {
+  "properties": {
+   "default": 0.0,
+   "max": 6.2831,
+   "min": 0.0,
+   "name": "Opening angle (gear housing)",
+   "subtype": "ANGLE",
+   "unit": "ROTATION"
+  },
+  "type": "float"
+ },
+ "gear_housing_opening_offset": {
+  "properties": {
+   "default": 0.0,
+   "max": 6.2831,
+   "min": 0.0,
+   "name": "Opening offset (gear housing)",
+   "subtype": "ANGLE",
+   "unit": "ROTATION"
+  },
+  "type": "float"
+ },
+ "gear_housing_shape": {
+  "properties": {
+   "default": 2.0,
+   "max": 10.0,
+   "min": 1.0,
+   "name": "Shape modifier (gear housing)"
+  },
+  "type": "float"
+ },
+ "gear_housing_thickness": {
+  "properties": {
+   "default": 0.05,
+   "max": 10,
+   "min": 0.001,
+   "name": "Thickness (gear housing)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "gear_number_of_teeth": {
+  "properties": {
+   "default": 30,
+   "max": 100,
+   "min": 2,
+   "name": "Number of teeth (gear)",
+   "subtype": "UNSIGNED"
+  },
+  "type": "int"
+ },
+ "gear_radius": {
+  "properties": {
+   "default": 0.5,
+   "max": 10,
+   "min": 0.0,
+   "name": "Radius (gear)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "main_housing_height": {
+  "properties": {
+   "default": 3.0,
+   "max": 10,
+   "min": 0.1,
+   "name": "Height (main housing)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "main_housing_radius": {
+  "properties": {
+   "default": 1.0,
+   "max": 10,
+   "min": 0.1,
+   "name": "Radius (main housing)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "screw_amount": {
+  "properties": {
+   "default": 0,
+   "max": 10,
+   "min": 0,
+   "name": "Amount (screws)"
+  },
+  "type": "int"
+ },
+ "screw_placement_radial": {
+  "properties": {
+   "default": 0.7,
+   "max": 10,
+   "min": 0.1,
+   "name": "Radial Placement (screws)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "screw_placement_tangential": {
+  "properties": {
+   "default": 1.0,
+   "max": 10,
+   "min": 0.1,
+   "name": "Tangential Placement (screws)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "screw_radius": {
+  "properties": {
+   "default": 0.2,
+   "max": 10,
+   "min": 0.1,
+   "name": "Size (screws)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "shaft_length": {
+  "properties": {
+   "default": 0.3,
+   "max": 10,
+   "min": 0.0,
+   "name": "Length (shaft)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "shaft_radius": {
+  "properties": {
+   "default": 0.2,
+   "max": 10,
+   "min": 0.0,
+   "name": "Radius (shaft)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "solenoid_housing_height": {
+  "properties": {
+   "default": 1.0,
+   "max": 10,
+   "min": 0.0,
+   "name": "Height (solenoid housing)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ },
+ "solenoid_housing_radius": {
+  "properties": {
+   "default": 0.5,
+   "max": 10,
+   "min": 0.0,
+   "name": "Radius (solenoid housing)",
+   "subtype": "DISTANCE",
+   "unit": "LENGTH"
+  },
+  "type": "float"
+ }
+}

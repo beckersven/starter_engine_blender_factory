@@ -10,10 +10,7 @@ from random import random
 
 def main_housing(main_housing_radius, main_housing_height):
     """
-    [   
-        {"type": "float", "properties": {"attr":"main_housing_height", "name": "Height (main housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 3.0, "min": 0.1, "max": 10}},
-        {"type": "float", "properties": {"attr":"main_housing_radius", "name": "Radius (main housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 1.0, "min": 0.1, "max": 10}}
-    ]
+        ["A"]
     """
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=main_housing_radius, depth=main_housing_height, location=(0,0,0))
     bpy.context.object.location.z = main_housing_height / 2.0
@@ -26,15 +23,7 @@ def main_housing(main_housing_radius, main_housing_height):
 def subside(shaft_radius, shaft_length, bit_type, screw_amount, screw_radius, screw_placement_radial, screw_placement_tangential,
     main_housing_radius=0):
     """
-    [     
-        {"type": "float", "properties": {"attr":"shaft_radius", "name": "Radius (shaft)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"shaft_length", "name": "Length (shaft)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.3, "min": 0.0, "max": 10}},
-        {"type": "enum", "properties": {"attr":"bit_type", "name": "Bit type (screws)", "items": [["Allen", "ALLEN", "Hexagon-shaped"], ["Torx", "TORX", "Star-shaped"], ["Phillips", "PHILLIPS", "Cross-shaped"], ["None", "NONE", "No shape"]],"default": "Phillips"}},
-        {"type": "int", "properties": {"attr":"screw_amount", "name": "Amount (screws)", "default": 0, "min": 0, "max": 10}},
-        {"type": "float", "properties": {"attr":"screw_radius", "name": "Size (screws)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.1, "max": 10}},
-        {"type": "float", "properties": {"attr":"screw_placement_radial", "name": "Radial Placement (screws)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.7, "min": 0.1, "max": 10}},
-        {"type": "float", "properties": {"attr":"screw_placement_tangential", "name": "Tangential Placement (screws)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 1.0, "min": 0.1, "max": 10}}
-    ]
+        ["A", "B"]
     """
     angles = [np.deg2rad(i * 360 / screw_amount) + screw_placement_tangential for i in range(screw_amount)]
     for angle in angles:
@@ -48,11 +37,7 @@ def subside(shaft_radius, shaft_length, bit_type, screw_amount, screw_radius, sc
 
 def cap(cap_height, cap_narrowing, cap_shape, main_housing_height=0, main_housing_radius=0, connector_height=0, flange_height=0):
     """
-    [     
-        {"type": "float", "properties": {"attr":"cap_height", "name": "Height (cap)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.0, "max": 5}},
-        {"type": "float", "properties": {"attr":"cap_narrowing", "name": "Narrowing (cap)", "subtype": "DISTANCE", "unit": "LENGTH",  "default": 0.2, "min": 0.0, "max": 5}},
-        {"type": "float", "properties": {"attr":"cap_shape", "name": "Shape modifier (cap)", "default": 6.0, "min": 1.0, "max": 10.0}}
-    ]
+        ["A", "B"]
     """
     b = cap_height / ((main_housing_radius)**(2 * cap_shape)-(main_housing_radius-cap_narrowing)**(2 * cap_shape))
     a = b * main_housing_radius ** (2 * cap_shape)
@@ -73,17 +58,7 @@ def cap(cap_height, cap_narrowing, cap_shape, main_housing_height=0, main_housin
 def gearbox(gear_height, gear_radius, gear_cone_angle, gear_number_of_teeth, gear_housing, gear_housing_shape, gear_housing_opening_angle, gear_housing_opening_offset,gear_housing_thickness,
     main_housing_radius=0, main_housing_height=0, cap_narrowing=0, cap_height=0, connector_height=0, flange_height=0):
     """
-    [     
-        {"type": "float", "properties": {"attr":"gear_height", "name": "Height (gear)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.5, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"gear_radius", "name": "Radius (gear)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.5, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"gear_cone_angle", "name": "Cone angle (gear)", "subtype": "ANGLE", "unit": "ROTATION", "default": 0.0, "min": 0.0, "max": 1.57}},
-        {"type": "int", "properties": {"attr":"gear_number_of_teeth", "name": "Number of teeth (gear)", "subtype": "UNSIGNED", "default": 30, "min": 2, "max": 100}},
-        {"type": "bool", "properties": {"attr":"gear_housing", "name": "Gear Housing", "default": true}},
-        {"type": "float", "properties": {"attr":"gear_housing_shape", "name": "Shape modifier (gear housing)", "default": 2.0, "min": 1.0, "max": 10.0}},
-        {"type": "float", "properties": {"attr":"gear_housing_opening_angle", "name": "Opening angle (gear housing)", "subtype": "ANGLE", "unit": "ROTATION", "default": 0.0, "min": 0.0, "max": 6.2831}},
-        {"type": "float", "properties": {"attr":"gear_housing_opening_offset", "name": "Opening offset (gear housing)", "subtype": "ANGLE", "unit": "ROTATION", "default": 0.0, "min": 0.0, "max": 6.2831}},
-        {"type": "float", "properties": {"attr":"gear_housing_thickness", "name": "Thickness (gear housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.05, "min": 0.001, "max": 10}}
-    ]
+        ["A", "B"]
     """
     if gear_radius > main_housing_radius - 0.1 - cap_narrowing:
         gear_radius = main_housing_radius - 0.1 - cap_narrowing
@@ -137,11 +112,7 @@ def gearbox(gear_height, gear_radius, gear_cone_angle, gear_number_of_teeth, gea
         yield bpy.context.object
 def connector(connector_height, connector_width, connector_length, solenoid_housing_radius=0, main_housing_radius=0, main_housing_height=0):
     """
-    [     
-        {"type": "float", "properties": {"attr":"connector_height", "name": "Height", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.5, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"connector_width", "name": "Width (crosspiece)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.8, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"connector_length", "name": "Length (crosspiece)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.5, "min": 0.0, "max": 10}}
-    ]
+        ["A", "B"]
     """
     connector_width = min([2*main_housing_radius, 2*solenoid_housing_radius, connector_width])
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=main_housing_radius, depth=connector_height, location=(0,0,main_housing_height + connector_height / 2.0))
@@ -156,22 +127,14 @@ def connector(connector_height, connector_width, connector_length, solenoid_hous
 
 def solenoid(solenoid_housing_radius, solenoid_housing_height, main_housing_radius=0, main_housing_height=0, connector_length=0):
     """
-    [     
-        {"type": "float", "properties": {"attr":"solenoid_housing_radius", "name": "Radius (solenoid housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.5, "min": 0.0, "max": 10}},
-        {"type": "float", "properties": {"attr":"solenoid_housing_height", "name": "Height (solenoid housing)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 1.0, "min": 0.0, "max": 10}}
-    ]
+        ["A", "B"]
     """
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=solenoid_housing_radius, depth=solenoid_housing_height, location=(connector_length + main_housing_radius + solenoid_housing_radius,0,main_housing_height - solenoid_housing_height / 2.0))
     yield bpy.context.object
 
 def flange(flange_amount_prongs, flange_height, flange_length_prongs, flange_angle_offset, main_housing_radius=0, main_housing_height=0, connector_height=0):
     """
-    [     
-        {"type": "int", "properties": {"attr":"flange_amount_prongs", "name": "Amount of prongs (flange)", "default": 2, "min": 1, "max": 6}},
-        {"type": "float", "properties": {"attr":"flange_height", "name": "Height (flange)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.0, "max": 3}},
-        {"type": "float", "properties": {"attr":"flange_length_prongs", "name": "Length (flange prongs)", "subtype": "DISTANCE", "unit": "LENGTH", "default": 0.2, "min": 0.0, "max": 3}},
-        {"type": "float", "properties": {"attr":"flange_angle_offset", "name": "Angle offset (flange)", "subtype": "ANGLE", "unit": "ROTATION", "default": 0.0, "min": 0.0, "max": 6.2831}}
-    ]
+        ["A", "B"]
     """
     angles = [np.deg2rad(i * 360 / float(flange_amount_prongs)) + flange_angle_offset for i in range(flange_amount_prongs)]
     bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=main_housing_radius, depth=flange_height, location=(0,0,main_housing_height + connector_height + flange_height / 2.0))

@@ -13,7 +13,8 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
     bl_label = "Starter Engine Properties"
     bl_options = {'REGISTER', 'UNDO', 'PRESET'}
     bl_description = "Add and configure new starter engine"    
-    
+
+
     @classmethod
     def poll(cls, context):
         return context.scene is not None
@@ -39,7 +40,8 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        for component in self.component_generators:
+        col.prop(self, "part_type")
+        for component in self.component_generators[self.part_type]:
             col.label(text=component.__name__.replace("_", " "))
             for prop in self.get_propertydict_from_prototype(component, True).keys():
                 col.prop(self, prop)
@@ -47,9 +49,8 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
         #return {"FINISHED"}
 
     def execute(self, context):
-
         objects = []
-        for component in self.component_generators:
+        for component in self.component_generators[self.part_type]:
             for sub_object in component(** self.get_propertydict_from_prototype(component, False)):
                 objects.append(sub_object)
         bpy.ops.object.select_all(action='DESELECT')
