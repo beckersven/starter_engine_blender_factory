@@ -20,8 +20,7 @@ def main_housing(main_housing_radius, main_housing_height):
     yield bpy.context.object
 
 
-def subside(shaft_radius, shaft_length, bit_type, screw_amount, screw_radius, screw_placement_radial, screw_placement_tangential,
-    main_housing_radius=0):
+def subside(shaft_radius, shaft_length, bit_type, screw_amount, screw_radius, screw_placement_radial, screw_placement_tangential):
     """
         ["A", "B"]
     """

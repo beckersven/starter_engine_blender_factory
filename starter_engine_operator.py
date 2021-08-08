@@ -4,7 +4,7 @@ from bpy.props import *
 from bpy_extras import object_utils
 from bpy_extras.object_utils import AddObjectHelper
 from . import component_generator_util
-from inspect import getargspec, getmembers, isfunction
+from inspect import getargspec
 import json
 
 class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
@@ -21,12 +21,13 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
     
 
     def get_propertydict_from_prototype(self, function, reduced):
+        if getargspec(function).args is None:
+            return dict()
         output_dict = {}
         if reduced and getargspec(function).defaults is not None:
             deductable = len(getargspec(function).defaults)
         else:
             deductable = 0
-        
         try:
             for i in range(len(getargspec(function).args) - deductable):
                 output_dict.update({getargspec(function).args[i]: getattr(self, getargspec(function).args[i])})
@@ -46,7 +47,6 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
             for prop in self.get_propertydict_from_prototype(component, True).keys():
                 col.prop(self, prop)
             col.separator()
-        #return {"FINISHED"}
 
     def execute(self, context):
         objects = []
@@ -57,4 +57,5 @@ class StarterEngineOperator(bpy.types.Operator,AddObjectHelper):
         for obj in objects:
             obj.select_set(True)
         bpy.ops.object.join()
+        bpy.context.object.name="starter_engine"
         return {"FINISHED"}

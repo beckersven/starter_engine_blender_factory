@@ -1,15 +1,3 @@
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
     "name" : "Starter Engine Factory",
@@ -25,7 +13,6 @@ bl_info = {
 import bpy
 from bpy.props import *
 import json
-
 from inspect import getargspec, getmembers, isfunction
 
 from . starter_engine_operator import StarterEngineOperator
@@ -34,8 +21,9 @@ from . import component_generator_util
 
 
 
-def parse_and_process_parameters(parameter_file = "parameters.yaml", target_class = StarterEngineOperator):
-    with open("parameters", "r") as ifile:
+def parse_and_process_parameters(parameter_file = "parameters", target_class = StarterEngineOperator):
+
+    with open(parameter_file, "r") as ifile:
         parameters = json.loads(ifile.read())
     
     def _enum_wrapper(**kwargs):
@@ -54,7 +42,8 @@ def parse_and_process_parameters(parameter_file = "parameters.yaml", target_clas
     for parameter_name, parameter_properties in parameters.items():
             parameter_properties["properties"].update({"attr": parameter_name})
             setattr(target_class, parameter_name, property_translator[parameter_properties["type"]](**parameter_properties["properties"]))
-   
+    return parameters.keys()
+
 def parse_and_process_components(source_module = component_generator_util, target_class = StarterEngineOperator):
     available_component_generators = getmembers(source_module, isfunction)
     type_dict = {}
@@ -73,17 +62,42 @@ def parse_and_process_components(source_module = component_generator_util, targe
 
         ))
     setattr(target_class, "component_generators", type_dict)
+    return type_dict
 
-def check_configuration():
-    pass
+def check_configuration(parameters, type_dict):
+    used_parameters = set()
+    for component_generator_type, component_generators in type_dict.items():
+        user_input_parameters = set()
+        for component_generator in component_generators:
+            if getargspec(component_generator).args is None:
+                continue
+            for i, argument in enumerate(getargspec(component_generator).args):
+                if argument not in parameters:
+                    raise(Exception("Component with function '{}' requires argument '{}' which is not part of 'parameters'-file!".format(component_generator.__name__, argument)))
+                if getargspec(component_generator).defaults is None:
+                    default_length = 0
+                else:
+                    default_length = len(getargspec(component_generator).defaults)
+                if i < len(getargspec(component_generator).args) - default_length:
+                    if argument in user_input_parameters:
+                        print("[WARNING!] Property '{}' will have redundant user-input in function '{}' (it is already non-default kwarg in another function)".format(argument, component_generator.__name__))
+                        bpy.context.window_manager.popup_menu(lambda self, context: self.layout.label(text="Redundant user input parameters - Check console"), title="Sloppy Configuration", icon='ERROR')
+                    else:
+                        user_input_parameters.add(argument)
+        used_parameters = used_parameters.union(user_input_parameters)
+    
+    unused_parameters = set(parameters) - used_parameters
+    if len(unused_parameters) > 0:
+        print("[WARNING!] Properties {} are unused and causing overhead".format(unused_parameters))
+        bpy.context.window_manager.popup_menu(lambda self, context: self.layout.label(text="Unused properties found - Check console"), title="Sloppy Configuration", icon='ERROR')
+
 
 def register():
-    parse_and_process_parameters()
-    parse_and_process_components()
-    # bpy.ops.preferences.addon_enable(module="add_mesh_extra_objects")
+    
+    
+    check_configuration(parse_and_process_parameters(), parse_and_process_components())
     bpy.utils.register_class(StarterEngineOperator)
-
-
+    bpy.types.VIEW3D_MT_mesh_add.append(lambda self, context: self.layout.operator(StarterEngineOperator.bl_idname, text="Starter Engine", icon="CONSTRAINT"))
 def unregister():
     bpy.utils.unregister_class(StarterEngineOperator)
 
